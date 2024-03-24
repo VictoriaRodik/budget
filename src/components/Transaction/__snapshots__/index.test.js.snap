@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transaction component should show transaction 1`] = `
+<div
+  className="sc-bdfCDU fjbXMR"
+  value={100}
+>
+  <div
+    className="sc-gsTDqH jCRJqK"
+  >
+    01.01.2024
+  </div>
+  <div
+    className="sc-dlfmHC czogkz"
+    name="value"
+  >
+    100.00
+  </div>
+  <div
+    className="sc-hKgKIp eIcyOC"
+  >
+    test
+  </div>
+</div>
+`;
