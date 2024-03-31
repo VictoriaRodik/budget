@@ -31,7 +31,7 @@ const Home = () => {
         setTransactions(item);
       })
       .catch((e) => {
-        console.error('error', e)
+        console.error("error", e);
       });
   }, [setTransactions]);
 
@@ -44,13 +44,26 @@ const Home = () => {
     [setTransactions]
   );
 
+  const onStarClick = useCallback((id) => {
+    setTransactions((transactions) =>
+      transactions.map((item) => item.id !== id ? item : {
+        ...item,
+        isStarred: !item.isStarred
+      })
+    );
+  }, []);
+
   return (
     <ErrorBoundary>
       <Wrapper>
         <Balance balance={balance} />
         <Form onChange={onChange} />
         <hr />
-        <Transactions transactions={transactions} onDelete={onDelete} />
+        <Transactions
+          transactions={transactions}
+          onDelete={onDelete}
+          onStarClick={onStarClick}
+        />
       </Wrapper>
     </ErrorBoundary>
   );
