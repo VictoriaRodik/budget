@@ -10,7 +10,6 @@ const Transactions = ({ transactions = [], onDelete, onStarClick }) =>
       onStarClick={onStarClick}
     />
   ));
-
 Transactions.propTypes = {
   transactions: PropTypes.array,
 };

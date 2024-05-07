@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
-import { STATUSES } from "./constants";
-import { getItems, addItem } from "./utils/indexDB";
 
-export const useBooleanToggle = () => {
-  const [status, setStatus] = useState(false);
+import { STATUSES } from "./constants";
+import { getData, addItem, deleteItem, updateItem } from "./utils/indexDB";
+
+export const useBooleanToggle = (initialStatus = false) => {
+  const [status, setStatus] = useState(initialStatus);
 
   const handleStatusChange = () => {
-    setStatus((currentStatus) => !currentStatus);
+    console.log("switch state");
+    setStatus((currrentStatus) => !currrentStatus);
   };
 
   return {
@@ -20,6 +22,7 @@ export const useData = () => {
     transactions: [],
     error: "",
     status: STATUSES.IDLE,
+    hasNextPage: true,
   });
 
   useEffect(() => {
@@ -28,12 +31,13 @@ export const useData = () => {
       status: STATUSES.PENDING,
     }));
 
-    getItems()
+    getData(0, 20)
       .then((transactions) => {
         setState((state) => ({
           ...state,
           transactions,
           status: STATUSES.SUCCESS,
+          hasNextPage: true,
         }));
       })
       .catch((e) => {
@@ -42,22 +46,50 @@ export const useData = () => {
           transactions: [],
           status: STATUSES.ERROR,
           error: e,
+          hasNextPage: false,
         }));
       });
   }, []);
 
-  const pushTransaction = useCallback((data) => {
-    const transaction = {
-      ...data,
-      value: +data.value,
-      id: Date.now(),
-    };
-    setState((state) => ({
+  const loadMoreRows = useCallback(() => {
+    setState({
       ...state,
-      transactions: [transaction, ...state.transactions],
-    }));
-    addItem(transaction);
-  }, []);
+      status: STATUSES.PENDING,
+    });
+
+    getData(state.transactions.length, 20)
+      .then((transactions) => {
+        setState({
+          ...state,
+          transactions: [...state.transactions, ...transactions],
+          status: STATUSES.SUCCESS,
+        });
+      })
+      .catch(() => {
+        setState({
+          ...state,
+          hasNextPage: false,
+        });
+      });
+  }, [state]);
+
+  const pushTransaction = useCallback(
+    (data) => {
+      const transaction = {
+        ...data,
+        value: +data.value,
+        id: Date.now(),
+      };
+
+      setState((state) => ({
+        ...state,
+        transactions: [transaction, ...state.transactions],
+      }));
+
+      addItem(transaction);
+    },
+    [setState]
+  );
 
   const onDelete = useCallback(
     (id) => {
@@ -65,25 +97,34 @@ export const useData = () => {
         ...state,
         transactions: state.transactions.filter((item) => item.id !== id),
       }));
+
+      deleteItem(id);
     },
-    []
+    [setState]
   );
 
   const onStarClick = useCallback(
     (id) => {
-      setState((state) => ({
-        ...state,
-        transactions: state.transactions.map((item) =>
-          item.id !== id
-            ? item
-            : {
-                ...item,
-                isStarred: !item.isStarred,
-              }
-        ),
-      }));
+      const item = state.transactions.find((i) => i.id === id);
+
+      updateItem({
+        ...item,
+        isStarred: !item.isStarred,
+      }).then(() => {
+        setState((state) => ({
+          ...state,
+          transactions: state.transactions.map((item) =>
+            item.id !== id
+              ? item
+              : {
+                  ...item,
+                  isStarred: !item.isStarred,
+                }
+          ),
+        }));
+      });
     },
-    []
+    [setState, state]
   );
 
   return {
@@ -91,5 +132,6 @@ export const useData = () => {
     pushTransaction,
     onDelete,
     onStarClick,
+    loadMoreRows,
   };
 };
