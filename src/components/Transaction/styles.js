@@ -1,15 +1,31 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  background: ${({ value }) => (value < 0 ? "#e2e1e1" : "#fff")};
-  border: 1px solid #dbdbdb;
+  background: ${({ value, theme }) =>
+    value < 0 ? theme.additionalBackground : theme.background};
+  color: ${({ theme }) => theme.color};
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.color};
   border-radius: 3px;
-  padding: 5px;
+  padding: 15px;
   margin-bottom: 10px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 16px;
+
+  @media (min-width: 480px) {
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
+
 Wrapper.displayName = "TransactionWrapper";
 
 export const TransactionDate = styled.div`
@@ -19,14 +35,15 @@ TransactionDate.displayName = "TransactionDate";
 
 export const Value = styled.div`
   flex-grow: 1;
+  margin: 0 0 5px 30px;
 `;
 Value.displayName = "Value";
 
 export const Comment = styled.div`
   flex-grow: 2;
-
+  margin: 0 0 5px 30px;
   transition: opacity 0.3s ease;
-  opacity: ${({ isHovered }) => (isHovered ? 1 : 0.4)};
+  opacity: ${({ isHovered }) => (isHovered ? 1 : 0.7)};
   &:hover {
     opacity: 1;
   }
@@ -40,3 +57,11 @@ export const Icon = styled.span`
   }
 `;
 Icon.displayName = "Icon";
+
+export const DateContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+DateContainer.displayName = "DateContainer";

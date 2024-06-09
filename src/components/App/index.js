@@ -1,53 +1,18 @@
-import React from 'react';
-import { GlobalStyle } from './styles';
-import { Wrapper } from './styles';
-import Home from '../Home';
-import About from '../About';
-import Statistics from '../Statistics';
-import Settings from '../Settings';
+import React, { useContext } from "react";
+import { ThemeProvider } from "styled-components";
+import App from "./app";
+import { AppContext } from "../providers/context";
+import { getTheme } from "../providers/themes/getTheme";
+import { IntlAppProvider } from "../providers/i18n";
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { open } from '../../utils/indexDB';
-import Header from '../Header/Index';
+export default () => {
+  const { state, dispatch } = useContext(AppContext);
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            loading: true
-        }
-    }
-
-    componentDidMount() {
-        open().then(() => {
-            this.setState({
-                loading: false
-            })
-        }).catch(() => {
-            console.error('Error')
-        });
-    }
-
-    render() {
-        if (this.state.loading) {
-            return <div>Loading...</div>
-        };
-        return (
-            <BrowserRouter>
-                <Wrapper>
-                    <GlobalStyle />
-                    <Header />
-                    <Routes>
-                        <Route exact path="/" element={<Home />} />
-                        <Route path="/statistics" element={<Statistics />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/about" element={<About />} />
-                    </Routes>
-                </Wrapper>
-            </BrowserRouter>
-        );
-    };
+  return (
+    <ThemeProvider theme={getTheme(state.themeName)}>
+      <IntlAppProvider>
+        <App />
+      </IntlAppProvider>
+    </ThemeProvider>
+  );
 };
-
-export default App;

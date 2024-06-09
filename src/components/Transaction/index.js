@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
-import { Wrapper, TransactionDate, Value, Comment, Icon } from "./styles";
+import { Wrapper, TransactionDate, Value, Comment, Icon, DateContainer } from "./styles";
+import { Button } from "../styledComponents/Button";
 import { AppContext } from "../providers/context";
 import { useCallback, useContext } from "react";
 import starGrey from "../../assets/img/star-grey.svg";
 import starYellow from "../../assets/img/star-yellow.svg";
+import { FormattedMessage } from "react-intl";
 
 const Transaction = ({
   transaction: { id, value, date, comment, isStarred },
@@ -16,15 +18,17 @@ const Transaction = ({
 
   return (
     <Wrapper value={value}>
+      <DateContainer>
       <Icon onClick={() => onStarClick(id)}>
         <img src={isStarred ? starYellow : starGrey} alt="Star" />
       </Icon>
       <TransactionDate>{date}</TransactionDate>
+      </DateContainer>
       <Value name="value">
         {value.toFixed(2)}, {state.currency}
       </Value>
       <Comment>{comment}</Comment>
-      <button onClick={deleteItem}>Remove</button>
+      <Button onClick={deleteItem}><FormattedMessage id="removeButton"/></Button>
     </Wrapper>
   );
 };

@@ -1,8 +1,10 @@
+import { Typography } from "../styledComponents/Typography";
+
 const Balance = ({ balance }) => {
     return (
-        <div>
+        <Typography>
             Current balance: {balance}
-        </div>
+        </Typography>
     )
 }
 export default Balance;

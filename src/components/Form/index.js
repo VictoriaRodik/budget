@@ -1,6 +1,8 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
-import { Wrapper, Input, Row, Button, Comment } from './styles';
+import { Wrapper, Input, Row, Comment } from './styles';
+import { Button } from "../styledComponents/Button";
+import { FormattedMessage } from "react-intl";
 
 const Form = (props) => {
     const [form, setForm] = useState({
@@ -47,7 +49,7 @@ const Form = (props) => {
 
                 </Row>
                 <Row>
-                    <Button>Save</Button>
+                    <Button><FormattedMessage id="saveButton"/></Button>
 
                     <Comment name="comment"
                         value={form.comment}
