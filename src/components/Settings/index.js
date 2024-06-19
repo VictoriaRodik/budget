@@ -4,11 +4,14 @@ import { AppContext } from "../providers/context";
 import { LOCALES } from "../providers/i18n";
 import { useBooleanToggle } from "../../hooks";
 import { saveToStorage } from "../../utils/sessionStorage";
+import { FormattedMessage } from "react-intl";
+import { Wrapper, OptionWrapper } from "./styles";
+import { Button } from "../styledComponents/Button";
 
 //import { addData } from "../../utils/generate";
 
 const Test = memo(({ data }) => {
- // console.log("rendering");
+  // console.log("rendering");
 
   return <div>{JSON.stringify(data)}</div>;
 });
@@ -48,43 +51,49 @@ const Setting = () => {
 
       <div>
         <form>
-          <div>
-            <label>
-              Currency:
-              <select
-                name="currency"
-                onChange={onChange}
-                value={state.currency}
-              >
-                <option value="UAH">UAH</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-              </select>
-            </label>
-          </div>
+          <Wrapper>
+            <OptionWrapper>
+              <label>
+                <FormattedMessage id="settingsPage.currencyLabel" />:
+                <select
+                  name="currency"
+                  onChange={onChange}
+                  value={state.currency}
+                >
+                  <option value="UAH">UAH</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                </select>
+              </label>
+            </OptionWrapper>
 
-          <div>
-            <label>
-              Language:
-              <select
-                name="locale"
-                onChange={onChangeLocale}
-                value={state.locale}
-              >
-                <option value={LOCALES.ENGLISH}>English</option>
-                <option value={LOCALES.UKRAINIAN}>Українська</option>
-              </select>
-            </label>
-          </div>
+            <OptionWrapper>
+              <label>
+                <FormattedMessage id="settingsPage.languageLabel" />:
+                <select
+                  name="locale"
+                  onChange={onChangeLocale}
+                  value={state.locale}
+                >
+                  <option value={LOCALES.ENGLISH}>English</option>
+                  <option value={LOCALES.UKRAINIAN}>Українська</option>
+                </select>
+              </label>
+            </OptionWrapper>
+          </Wrapper>
         </form>
       </div>
 
       <div>
-        <button onClick={handleStatusChange}>Розширені налаштування</button>
+        <Button onClick={handleStatusChange}>
+          <FormattedMessage id="settingsPage.buttonAdvancedSettings" />
+        </Button>
 
         {status ? (
           <div>
-            <h2>Розширені Налаштування</h2>
+            <h2>
+              <FormattedMessage id="settingsPage.buttonAdvancedSettings" />
+            </h2>
             <p>...</p>
           </div>
         ) : null}

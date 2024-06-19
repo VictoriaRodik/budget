@@ -11,5 +11,10 @@ export default {
         },
         saveButton: "Зберегти",
         removeButton: "Видалити",
+        settingsPage:{
+            currencyLabel: "Валюта",
+            languageLabel: "Мова",
+            buttonAdvancedSettings: "Розширені налаштування"
+        }
     }
 }

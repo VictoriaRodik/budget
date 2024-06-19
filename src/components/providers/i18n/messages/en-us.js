@@ -11,5 +11,10 @@ export default {
         },
         saveButton: "Save",
         removeButton: "Remove",
+        settingsPage:{
+            currencyLabel: "Currency",
+            languageLabel: "Language",
+            buttonAdvancedSettings: "Advanced settings"
+        }
     }
 }
